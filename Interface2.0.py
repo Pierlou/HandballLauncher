@@ -1,5 +1,5 @@
-import os
-os.environ['KIVY_GL_BACKEND'] = 'gl'
+##import os
+##os.environ['KIVY_GL_BACKEND'] = 'gl'  ## for screen implementation
 from kivy.app import App
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import Screen
@@ -50,35 +50,71 @@ class CustScreenManager(ScreenManager):
             self.background_color = [0, 1, 0, 1]
         else:
             self.background_color = [.88, .88, .88, 1]
+
+    @staticmethod
+    def show_hide_pace(pace_text):
+        if pace_text.color == [0, 0, 0, 1]:
+            pace_text.color = [0, 0, 0, 0]
+        else:
+            pace_text.color = [0, 0, 0, 1]
+
+##        if pace_slider.value_track_color == [1, 1, 1, 1]:
+##            pace_slider.value_track_color = [0, 0, 0, 0]
+##        else:
+##            pace_slider.value_track_color = [1, 1, 1, 1]
+            
     #____________________________________________________________________
 
     #Select all areas button
     @staticmethod
-    def areas_select_button(self):
-        if self.text == "Select all":
-            self.text = "Unselect" + "\n" + "      all"
+    def areas_select_button(area_selection_button, button1, button2, button3, button4, button5, button6, button7):
+        if area_selection_button.text == "Select all":
+            area_selection_button.text = "Unselect" + "\n" + "      all"
+            
+            if button1.background_color == [.88, .88, .88, 1]:
+                button1.background_color = [0, 1, 0, 1]
+            
+            if button2.background_color == [.88, .88, .88, 1]:
+                button2.background_color = [0, 1, 0, 1]
+                
+            if button3.background_color == [.88, .88, .88, 1]:
+                button3.background_color = [0, 1, 0, 1]
+                
+            if button4.background_color == [.88, .88, .88, 1]:
+                button4.background_color = [0, 1, 0, 1]
+                
+            if button5.background_color == [.88, .88, .88, 1]:
+                button5.background_color = [0, 1, 0, 1]
+                
+            if button6.background_color == [.88, .88, .88, 1]:
+                button6.background_color = [0, 1, 0, 1]
+                
+            if button7.background_color == [.88, .88, .88, 1]:
+                button7.background_color = [0, 1, 0, 1]
         else:
-            self.text = "Select all"
-    
-##    @staticmethod
-##    def all_areas_selection(self,area_selection_button):
-##        area_selection_button = ObjectProperty()
-##        button1 = ObjectProperty()
-##        button2 = ObjectProperty()
-##        button3 = ObjectProperty()
-##        button4 = ObjectProperty()
-##        button5 = ObjectProperty()
-##        button6 = ObjectProperty()
-##        button7 = ObjectProperty()
-##        list_buttons = [button1,button2,button3,button4,button5,button6,button7]
-##        if area_selection_button.text == "Select all":
-##            for button in list_buttons:
-##                if button.background_colour == [0, 1, 0, 1]:
-##                    button.background_color = [.88, .88, .88, 1]
-##        else:
-##            for button in list_buttons:
-##                if button.background_colour == [.88, .88, .88, 1]:
-##                    button.background_color = [0, 1, 0, 1]
+            area_selection_button.text = "Select all"
+            
+            if button1.background_color == [0, 1, 0, 1]:
+                button1.background_color = [.88, .88, .88, 1]
+            
+            if button2.background_color == [0, 1, 0, 1]:
+                button2.background_color = [.88, .88, .88, 1]
+            
+            if button3.background_color == [0, 1, 0, 1]:
+                button3.background_color = [.88, .88, .88, 1]
+            
+            if button4.background_color == [0, 1, 0, 1]:
+                button4.background_color = [.88, .88, .88, 1]
+            
+            if button5.background_color == [0, 1, 0, 1]:
+                button5.background_color = [.88, .88, .88, 1]
+            
+            if button6.background_color == [0, 1, 0, 1]:
+                button6.background_color = [.88, .88, .88, 1]
+            
+            if button7.background_color == [0, 1, 0, 1]:
+                button7.background_color = [.88, .88, .88, 1]
+
     
     #____________________________________________________________________
 
@@ -89,9 +125,10 @@ class CustScreenManager(ScreenManager):
     new_training_text_input = ObjectProperty()
     training_list = ObjectProperty()
 
-    def submit_training(self):
-        self.training_list.adapter.data.extend([self.new_training_text_input.text])
-        self.training_list._trigger_reset_populate()
+    @staticmethod
+    def submit_training(training_list):
+        training_list.adapter.data.extend([new_training_text_input.text])
+        training_list._trigger_reset_populate()
 
 sm = Builder.load_string("""
 #: import ListAdapter kivy.adapters.listadapter.ListAdapter
@@ -123,7 +160,7 @@ sm = Builder.load_string("""
 CustScreenManager:
 <CustScreenManager>:
 
-    new_training_name_text_input: new_training
+    new_training_text_input: new_training
     training_list: training_list_view
     
     MainMenu:
@@ -150,11 +187,6 @@ CustScreenManager:
                     root.transition.direction = 'left'
                     root.transition.duration = 0.5
                     root.current = 'NewCustomTraining'
-
-            CustButton:
-                text: "Random"
-                font_size: 40
-
 
 
     NewCustomTraining:
@@ -322,8 +354,7 @@ CustScreenManager:
                             size_hint_x: 1
                             on_press:
                                 root.button_click(self)
-                                #root.all_areas_selection(self,area_selection_button)
-                                root.areas_select_button(self)
+                                root.areas_select_button(area_selection_button, button1, button2, button3, button4, button5, button6, button7)
                                 
                         CustLabel:
                             size_hint_x: 1
@@ -526,8 +557,14 @@ CustScreenManager:
                 size_hint_y: 0.15
 
                 CustLabel:
-                    size_hint_x: 0.3
-                    text: "Pace: " + str(pace_slider_id.value) + "s"
+                    size_hint_x: 0.15
+                    text: "Pace: "
+                    font_size: 30
+
+                CustLabel:
+                    size_hint_x: 0.15
+                    id: pace_id
+                    text: str(pace_slider_id.value) + "s"
                     font_size: 30
                     
                 Slider:
@@ -543,6 +580,8 @@ CustScreenManager:
                     font_size: 25
                     on_press:
                         root.button_click(self)
+                        root.show_hide_pace(pace_id)
+                        
                         
     SavingCustomTraining:
         name: "SavingCustomTraining"
@@ -577,7 +616,7 @@ CustScreenManager:
                     font_size: 25
                     size_hint_x: 0.2
                     on_press:
-                        root.submit_training() #######
+                        root.submit_training(training_list_view) #######
                         root.transition.direction = 'left'
                         root.transition.duration = 0.5
                         root.current = 'NewCustomTraining'
